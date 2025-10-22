@@ -28,50 +28,6 @@ resource "kubernetes_limit_range" "example" {
    }
  }
 
-resource "kubernetes_deployment" "insecure_app" {
-  metadata {
-    name = "insecure-app"
-    labels = {
-      app = "insecure"
-    }
-  }
-
-  spec {
-    replicas = 1
-
-    selector {
-      match_labels = {
-        app = "insecure"
-      }
-    }
-
-    template {
-      metadata {
-        labels = {
-          app = "insecure"
-        }
-      }
-
-      spec {
-        container {
-          name  = "insecure-container"
-          image = "nginx:latest"
-
-          # Missing or incorrect run_as_non_root setting
-          security_context {
-            run_as_user = 0
-          }
-
-          port {
-            container_port = 80
-          }
-        }
-      }
-    }
-  }
-}
-
-provider "kubernetes" {}
 
 resource "kubernetes_pod" "nginx" {
   metadata {
