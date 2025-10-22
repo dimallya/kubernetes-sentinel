@@ -28,33 +28,42 @@ resource "kubernetes_limit_range" "example" {
    }
  }
 
-resource "kubernetes_deployment" "example" {
+resource "kubernetes_deployment" "insecure_app" {
   metadata {
-    name = "my-app-deployment"
+    name = "insecure-app"
     labels = {
-      app = "my-app"
+      app = "insecure"
     }
   }
+
   spec {
     replicas = 1
+
     selector {
       match_labels = {
-        app = "my-app"
+        app = "insecure"
       }
     }
+
     template {
       metadata {
         labels = {
-          app = "my-app"
+          app = "insecure"
         }
       }
+
       spec {
         container {
-          name  = "my-app-container"
-          image = "nginx:latest" # Replace with your desired image
+          name  = "insecure-container"
+          image = "nginx:latest"
+
+          # Missing or incorrect run_as_non_root setting
           security_context {
-            run_as_user              = 0 # Specify a non-root user ID
-            allow_privilege_escalation = true
+            run_as_user = 0
+          }
+
+          port {
+            container_port = 80
           }
         }
       }
