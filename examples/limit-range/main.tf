@@ -27,3 +27,37 @@ resource "kubernetes_limit_range" "example" {
        }
    }
  }
+
+resource "kubernetes_deployment" "example" {
+  metadata {
+    name = "my-app-deployment"
+    labels = {
+      app = "my-app"
+    }
+  }
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        app = "my-app"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          app = "my-app"
+        }
+      }
+      spec {
+        container {
+          name  = "my-app-container"
+          image = "nginx:latest" # Replace with your desired image
+          security_context {
+            run_as_user              = 0 # Specify a non-root user ID
+            allow_privilege_escalation = true
+          }
+        }
+      }
+    }
+  }
+}
