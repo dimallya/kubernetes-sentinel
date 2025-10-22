@@ -58,7 +58,7 @@ resource "kubernetes_service" "nginx" {
   }
 
   spec {
-    selector {
+    selector = {
       # NGINX pod labels are being referenced
       app = "${kubernetes_pod.nginx.metadata.0.labels.app}"
     }
