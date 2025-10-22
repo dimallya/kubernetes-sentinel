@@ -31,6 +31,9 @@ resource "kubernetes_limit_range" "example" {
 
 resource "kubernetes_pod" "nginx" {
   metadata {
+    labels = {
+      app     = "nginx"
+    }
     name = "nginx-pod"
   }
 
