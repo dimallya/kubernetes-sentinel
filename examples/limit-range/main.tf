@@ -7,20 +7,20 @@ resource "kubernetes_limit_range" "example" {
     spec {
         limit {
             type = "Pod"
-            max {
+            max = {
                 cpu = "2500m"
                 memory = "1024M"
             }
         }
         limit {
             type = "PersistentVolumeClaim"
-            min {
+            min = {
                 storage = "24M"
             }
         }
         limit {
             type = "Container"
-            default {
+            default = {
                 cpu = "50m"
                 memory = "24M"
             }
